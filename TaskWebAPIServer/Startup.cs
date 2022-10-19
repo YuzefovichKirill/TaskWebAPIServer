@@ -13,6 +13,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using TaskWebAPIServer.Data;
+using TaskWebAPIServer.Services;
 
 namespace TaskWebAPIServer
 {
@@ -31,6 +32,11 @@ namespace TaskWebAPIServer
 
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnectionString")));
             services.AddControllers();
+
+            services.AddScoped<IFridgeService, FridgeService>();
+            services.AddScoped<IFridgeModelService, FridgeModelService>();
+            services.AddScoped<IProductService, ProductService>();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "TaskWebAPIServer", Version = "v1" });

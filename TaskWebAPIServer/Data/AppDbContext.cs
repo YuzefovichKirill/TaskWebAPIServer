@@ -12,6 +12,8 @@ namespace TaskWebAPIServer.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            
+
             modelBuilder.Entity<FridgeProduct>().HasKey(fp => new
             {
                 fp.FridgeId, fp.ProductId
