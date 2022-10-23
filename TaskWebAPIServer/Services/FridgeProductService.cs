@@ -15,47 +15,44 @@ namespace TaskWebAPIServer.Services
             _context = context;
         }
 
-        public Product GetFridgeProduct(Guid fridgeId, Guid productId)
+        public FridgeProduct GetFridgeProduct(Guid fridgeId, Guid productId)
         {
-            Fridge dbFridge = _context.Fridges.Find(fridgeId);
-            Product dbProduct = _context.Products.Find(productId);
+            List<FridgeProduct> fridgeProduct =
+                _context.FridgeProducts.Where(fp => fp.FridgeId == fridgeId && fp.ProductId == productId).ToList();
 
-            var dbFP = _context.Fridges
-                .Where(f => f.Id == fridgeId)
-                .Join(_context.FridgeProducts, f => f.Id, fp => fp.FridgeId,
-                    (f, fp) => new { fridgeId = f.Id, fridgeProductId = fp.Id, fp.ProductId, fp.Quantity })
-                .Where(fp => fp.fridgeProductId == productId)
-                .Join(_context.Products, ffp => ffp.ProductId, p => p.Id, 
-                    (ffp, p) => new Product(){Id = p.Id,Name = p.Name,DefaultQuantity = ffp.Quantity });
-
-            return dbFP.FirstOrDefault();
+            return fridgeProduct.FirstOrDefault();
         }
 
-        public List<Product> GetFridgeProducts(Guid fridgeId)
+        public List<FridgeProduct> GetFridgeProducts(Guid fridgeId)
         {
-            Fridge dbFridge = _context.Fridges.Find(fridgeId);
-            var dbFP = _context.Fridges
-                .Where(f => f.Id == fridgeId)
-                .Join(_context.FridgeProducts, f => f.Id, fp => fp.FridgeId,
-                    (f, fp) => new { fridgeId = f.Id, fridgeProductId = fp.Id, fp.ProductId, fp.Quantity })
-                .Join(_context.Products, ffp => ffp.ProductId, p => p.Id,
-                    (ffp, p) => new Product() { Id = p.Id, Name = p.Name, DefaultQuantity = ffp.Quantity });
-
-            return dbFP.ToList();
+            List<FridgeProduct> fridgeProducts = _context.FridgeProducts.Where(fp => fp.FridgeId == fridgeId).ToList();
+            return fridgeProducts;
         }
 
-        public Product AddFridgeProduct(Guid fridgeId, Guid productId, Product product)
+        public FridgeProduct AddFridgeProduct(FridgeProduct fridgeProduct)
         {
-            throw new NotImplementedException();
+            fridgeProduct.Id = Guid.NewGuid();
+            var res = _context.FridgeProducts.Add(fridgeProduct);
+            _context.SaveChanges();
+            return fridgeProduct;
         }
 
-        public Product EditFridgeProduct(Guid fridgeId, Guid productId, Product product)
+        public FridgeProduct EditFridgeProduct(FridgeProduct fridgeProduct)
         {
-            throw new NotImplementedException();
+            var dbFridge = _context.Fridges.Find(fridgeProduct.FridgeId);
+            var dbProduct = dbFridge.fridgeProducts.Find(fp =>
+                fp.FridgeId == fridgeProduct.FridgeId && fp.ProductId == fridgeProduct.ProductId);
+
+            dbProduct.Quantity = fridgeProduct.Quantity;
+            _context.SaveChanges();
+            return fridgeProduct;
         }
-        public void DeleteFridgeProduct(Guid fridgeId, Product product)
+
+        public void DeleteFridgeProduct(FridgeProduct fridgeProduct)
         {
-            throw new NotImplementedException();
+            var dbFridge = _context.Fridges.Find(fridgeProduct.FridgeId);
+            dbFridge.fridgeProducts.Remove(fridgeProduct);
+            _context.SaveChanges();
         }
     }
 }

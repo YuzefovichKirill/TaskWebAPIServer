@@ -38,42 +38,41 @@ namespace TaskWebAPIServer.Controllers
 
         [HttpPost]
         [Route("api/[controller]/{fridgeId}/{productId}")]
-        public IActionResult AddFridgeProduct(Guid fridgeId, Guid productId, Product product)
+        public IActionResult AddFridgeProduct(FridgeProduct fridgeProduct)
         {
-            _fridgeProductData.AddFridgeProduct(fridgeId, productId, product);
+            _fridgeProductData.AddFridgeProduct(fridgeProduct);
             return Created(HttpContext.Request.Scheme + "://" + HttpContext.Request.Host
-                           + HttpContext.Request.Path + "/" + fridgeId + "/" + productId, product);
+                           + HttpContext.Request.Path + "/" + fridgeProduct.FridgeId + "/" + fridgeProduct.ProductId, fridgeProduct);
         }
 
         [HttpPut]
         [Route("api/[controller]/{fridgeId}/{productId}")]
-        public IActionResult EditFridgeProduct(Guid fridgeId, Guid productId, Product product)
+        public IActionResult EditFridgeProduct(FridgeProduct fridgeProduct)
         {
-            var _product = _fridgeProductData.GetFridgeProduct(fridgeId, productId);
+            var _product = _fridgeProductData.GetFridgeProduct(fridgeProduct.FridgeId, fridgeProduct.ProductId);
 
             if (_product is not null)
             {
-                product.Id = _product.Id;
-                _fridgeProductData.EditFridgeProduct(fridgeId, productId, product);
+                _fridgeProductData.EditFridgeProduct(fridgeProduct);
                 return Ok();
             }
 
-            return NotFound($"Product with id = {productId} was not found");
+            return NotFound($"Product with id = {fridgeProduct.ProductId} was not found");
         }
 
         [HttpDelete]
         [Route("api/[controller]/{fridgeId}/{productId}")]
-        public IActionResult DeleteFridgeProduct(Guid fridgeId, Guid productId)
+        public IActionResult DeleteFridgeProduct(FridgeProduct fridgeProduct)
         {
-            var _product = _fridgeProductData.GetFridgeProduct(fridgeId, productId);
+            var _product = _fridgeProductData.GetFridgeProduct(fridgeProduct.FridgeId, fridgeProduct.ProductId);
 
             if (_product is not null)
             {
-                _fridgeProductData.DeleteFridgeProduct(fridgeId, _product);
+                _fridgeProductData.DeleteFridgeProduct(fridgeProduct);
                 return Ok();
             }
 
-            return NotFound($"Product with id = {productId} was not found");
+            return NotFound($"Product with id = {fridgeProduct.ProductId} was not found");
         }
     }
 }

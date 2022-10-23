@@ -6,14 +6,14 @@ namespace TaskWebAPIServer.Services
 {
     public interface IFridgeProductService
     {
-        List<Product> GetFridgeProducts(Guid fridgeId);
+        List<FridgeProduct> GetFridgeProducts(Guid fridgeId);
 
-        Product GetFridgeProduct(Guid fridgeId, Guid productId);
+        FridgeProduct GetFridgeProduct(Guid fridgeId, Guid productId);
 
-        Product AddFridgeProduct(Guid fridgeId, Guid productId, Product product);
+        FridgeProduct AddFridgeProduct(FridgeProduct fridgeProduct);
 
-        Product EditFridgeProduct(Guid fridgeId, Guid productId, Product product);
+        FridgeProduct EditFridgeProduct(FridgeProduct fridgeProduct);
 
-        void DeleteFridgeProduct(Guid fridgeId, Product product);
+        void DeleteFridgeProduct(FridgeProduct fridgeProduct);
     }
 }
