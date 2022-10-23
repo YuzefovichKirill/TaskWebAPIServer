@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace TaskWebAPIServer.Models
@@ -7,7 +8,10 @@ namespace TaskWebAPIServer.Models
     {
         [Key]
         public Guid Id { get; set; }
+
         public string Name { get; set; }
         public int Year { get; set; }
+
+        public List<Fridge> fridges = new();
     }
 }

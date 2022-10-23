@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.IO;
 using TaskWebAPIServer.Models;
 using TaskWebAPIServer.Services;
 
@@ -28,6 +29,7 @@ namespace TaskWebAPIServer.Controllers
         public IActionResult GetProduct(Guid id)
         {
             var product = _productData.GetProduct(id);
+
             if (product is not null)
             {
                 return Ok(product);
@@ -45,7 +47,7 @@ namespace TaskWebAPIServer.Controllers
                            + HttpContext.Request.Path + "/" + product.Id, product);
         }
 
-        [HttpPatch]
+        [HttpPut]
         [Route("api/[controller]/{id}")]
         public IActionResult EditProduct(Guid id, Product product)
         {

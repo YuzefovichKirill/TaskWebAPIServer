@@ -36,6 +36,7 @@ namespace TaskWebAPIServer
             services.AddScoped<IFridgeService, FridgeService>();
             services.AddScoped<IFridgeModelService, FridgeModelService>();
             services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IFridgeProductService, FridgeProductService>();
 
             services.AddSwaggerGen(c =>
             {

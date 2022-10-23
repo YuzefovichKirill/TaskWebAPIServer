@@ -47,7 +47,7 @@ namespace TaskWebAPIServer.Controllers
                            + HttpContext.Request.Path + "/" + fridge.Id, fridge);
         }
 
-        [HttpPatch]
+        [HttpPut]
         [Route("api/[controller]/{id}")]
         public IActionResult EditFridge(Guid id, Fridge fridge)
         {

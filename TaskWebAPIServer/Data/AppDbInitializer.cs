@@ -17,10 +17,10 @@ namespace TaskWebAPIServer.Data
 
                 context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
-                Guid[] fridgeModelIds = new Guid[5];
-                Guid[] fridgeIds = new Guid[10];
-                Guid[] productIds = new Guid[10];
-                Guid[] fridgeProductIds = new Guid[10];
+                Guid[] fridgeModelIds = new Guid[] {Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid() };
+                Guid[] fridgeIds = new Guid[] { Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid() };
+                Guid[] productIds = new Guid[10] { Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid() };
+                Guid[] fridgeProductIds = new Guid[10] { Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid() };
 
                 context.FridgeModels.AddRange(new List<FridgeModel>()
                 {
@@ -30,13 +30,13 @@ namespace TaskWebAPIServer.Data
                 });
                 context.SaveChanges();
 
-                /*context.Fridges.AddRange(new List<Fridge>()
+                context.Fridges.AddRange(new List<Fridge>()
                 {
-                    //new Fridge() { Id = FridgeIds[0], Name = "Атлант1", OwnerName = "Сын", FridgeModelId = FridgeModelIds[0]},
-                    //new Fridge() { Id = ids[5], Name = "Bosch2", OwnerName = "Сын2", FridgeModelId = ids[1] },
-                    //new Fridge() { Id = ids[6] ,Name = "LG1", OwnerName = "Сын2", FridgeModelId = ids[2] }
+                    new Fridge() { Id = fridgeIds[0], Name = "Атлант1", OwnerName = "Сын", FridgeModelId = fridgeModelIds[0]},
+                    new Fridge() { Id = fridgeIds[1], Name = "Bosch2", OwnerName = "Сын2", FridgeModelId = fridgeModelIds[1] },
+                    new Fridge() { Id = fridgeIds[2], Name = "LG1", OwnerName = "Сын2", FridgeModelId = fridgeModelIds[2] }
                 });
-                context.SaveChanges();*/
+                context.SaveChanges();
 
                 context.Products.AddRange(new List<Product>()
                 {
@@ -46,7 +46,7 @@ namespace TaskWebAPIServer.Data
                 });
                 context.SaveChanges();
 
-                /*context.FridgeProducts.AddRange(new List<FridgeProduct>()
+                context.FridgeProducts.AddRange(new List<FridgeProduct>()
                 {
                     new FridgeProduct()
                     {
@@ -63,7 +63,7 @@ namespace TaskWebAPIServer.Data
                         Quantity = 2
                     }
                 });
-                context.SaveChanges();*/
+                context.SaveChanges();
             }
         }
     }
