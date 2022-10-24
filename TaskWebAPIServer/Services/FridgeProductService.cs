@@ -14,19 +14,28 @@ namespace TaskWebAPIServer.Services
         {
             _context = context;
         }
-
-        public FridgeProduct GetFridgeProduct(Guid fridgeId, Guid productId)
+            
+        public Product GetFridgeProduct(Guid fridgeId, Guid productId)
         {
-            List<FridgeProduct> fridgeProduct =
-                _context.FridgeProducts.Where(fp => fp.FridgeId == fridgeId && fp.ProductId == productId).ToList();
+            // send quantity as DefaultQuantity
+            List<Product> product = _context.Fridges
+                    .Where(f => f.Id == fridgeId)
+                    .Join(_context.FridgeProducts, f => f.Id, fp => fp.FridgeId, (f, fp) => new {fridgeId = f.Id, productId = fp.ProductId, quantity = fp.Quantity} )
+                    .Where(ffp => ffp.productId == productId)
+                    .Join(_context.Products, ffp => ffp.productId, p => p.Id, (ffp, p) => new Product(){Id = ffp.productId, Name = p.Name, DefaultQuantity = ffp.quantity}).ToList();
 
-            return fridgeProduct.FirstOrDefault();
+            return product.FirstOrDefault();
         }
 
-        public List<FridgeProduct> GetFridgeProducts(Guid fridgeId)
+        public List<Product> GetFridgeProducts(Guid fridgeId)
         {
-            List<FridgeProduct> fridgeProducts = _context.FridgeProducts.Where(fp => fp.FridgeId == fridgeId).ToList();
-            return fridgeProducts;
+            // send quantity as DefaultQuantity
+            List<Product> products = _context.Fridges
+                .Where(f => f.Id == fridgeId)
+                .Join(_context.FridgeProducts, f => f.Id, fp => fp.FridgeId, (f, fp) => new { fridgeId = f.Id, productId = fp.ProductId, quantity = fp.Quantity })
+                .Join(_context.Products, ffp => ffp.productId, p => p.Id, (ffp, p) => new Product() { Id = ffp.productId, Name = p.Name, DefaultQuantity = ffp.quantity }).ToList();
+
+            return products;
         }
 
         public FridgeProduct AddFridgeProduct(FridgeProduct fridgeProduct)
@@ -39,19 +48,20 @@ namespace TaskWebAPIServer.Services
 
         public FridgeProduct EditFridgeProduct(FridgeProduct fridgeProduct)
         {
-            var dbFridge = _context.Fridges.Find(fridgeProduct.FridgeId);
-            var dbProduct = dbFridge.fridgeProducts.Find(fp =>
-                fp.FridgeId == fridgeProduct.FridgeId && fp.ProductId == fridgeProduct.ProductId);
+            var dbFridgeProduct = _context.FridgeProducts
+                .Where(fp => fp.FridgeId == fridgeProduct.FridgeId && fp.ProductId == fridgeProduct.ProductId).ToList().FirstOrDefault();
 
-            dbProduct.Quantity = fridgeProduct.Quantity;
+            dbFridgeProduct.Quantity = fridgeProduct.Quantity;
             _context.SaveChanges();
             return fridgeProduct;
         }
 
-        public void DeleteFridgeProduct(FridgeProduct fridgeProduct)
+        public void DeleteFridgeProduct(Guid fridgeId, Guid productId)
         {
-            var dbFridge = _context.Fridges.Find(fridgeProduct.FridgeId);
-            dbFridge.fridgeProducts.Remove(fridgeProduct);
+            var dbFridgeProduct = _context.FridgeProducts
+                .Where(fp => fp.FridgeId == fridgeId && fp.ProductId == productId).ToList().FirstOrDefault();
+
+            _context.FridgeProducts.Remove(dbFridgeProduct);
             _context.SaveChanges();
         }
     }

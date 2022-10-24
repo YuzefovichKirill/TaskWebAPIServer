@@ -62,17 +62,11 @@ namespace TaskWebAPIServer.Controllers
 
         [HttpDelete]
         [Route("api/[controller]/{fridgeId}/{productId}")]
-        public IActionResult DeleteFridgeProduct(FridgeProduct fridgeProduct)
+        public IActionResult DeleteFridgeProduct(Guid fridgeId, Guid productId)
         {
-            var _product = _fridgeProductData.GetFridgeProduct(fridgeProduct.FridgeId, fridgeProduct.ProductId);
 
-            if (_product is not null)
-            {
-                _fridgeProductData.DeleteFridgeProduct(fridgeProduct);
-                return Ok();
-            }
-
-            return NotFound($"Product with id = {fridgeProduct.ProductId} was not found");
+            _fridgeProductData.DeleteFridgeProduct(fridgeId, productId);
+            return Ok();
         }
     }
 }
