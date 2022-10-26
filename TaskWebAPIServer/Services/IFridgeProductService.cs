@@ -6,6 +6,7 @@ namespace TaskWebAPIServer.Services
 {
     public interface IFridgeProductService
     {
+        public void SetDefaultProductQuantities();
         List<Product> GetFridgeProducts(Guid fridgeId);
 
         Product GetFridgeProduct(Guid fridgeId, Guid productId);

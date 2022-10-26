@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using TaskWebAPIServer.Data;
 using TaskWebAPIServer.Models;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using TaskWebAPIServer.Controllers;
 
 namespace TaskWebAPIServer.Services
 {
@@ -14,7 +16,24 @@ namespace TaskWebAPIServer.Services
         {
             _context = context;
         }
-            
+
+        public void SetDefaultProductQuantities()
+        {
+
+            var fridgeProducts = _context.FridgeProducts.FromSqlRaw("EXECUTE SetDefaultProductQuantity").ToList();
+
+            var products = _context.Products.ToList();
+
+            var fridgeProductsChange = fridgeProducts.Join(products, fp => fp.ProductId, p => p.Id,
+                (fp, p) => new FridgeProduct() { Id = fp.Id, FridgeId = fp.FridgeId, ProductId = fp.ProductId, Quantity = p.DefaultQuantity }).ToList();
+
+            foreach (var fridgeProductChange in fridgeProductsChange)
+            {
+                EditFridgeProduct(fridgeProductChange);
+                _context.SaveChanges();
+            }
+        }
+
         public Product GetFridgeProduct(Guid fridgeId, Guid productId)
         {
             // send quantity as DefaultQuantity

@@ -16,6 +16,14 @@ namespace TaskWebAPIServer.Controllers
             _fridgeProductData = fridgeProductData;
         }
 
+        [HttpPost]
+        [Route("api/[controller]")]
+        public IActionResult SetDefaultProductQuantities()
+        {
+            _fridgeProductData.SetDefaultProductQuantities();
+            return Ok();
+        }
+
         [HttpGet]
         [Route("api/[controller]/{fridgeId}")]
         public IActionResult GetFridgeProducts(Guid fridgeId)
@@ -33,7 +41,7 @@ namespace TaskWebAPIServer.Controllers
                 return Ok(product);
             }
 
-            return NotFound($"Product with id = {productId} was not found");
+            return NotFound($"Fridge product with id = {productId} was not found");
         }
 
         [HttpPost]
@@ -57,16 +65,22 @@ namespace TaskWebAPIServer.Controllers
                 return Ok();
             }
 
-            return NotFound($"Product with id = {fridgeProduct.ProductId} was not found");
+            return NotFound($"Fridge product with id = {fridgeProduct.ProductId} was not found");
         }
 
         [HttpDelete]
         [Route("api/[controller]/{fridgeId}/{productId}")]
         public IActionResult DeleteFridgeProduct(Guid fridgeId, Guid productId)
         {
+            var fridgeProduct = _fridgeProductData.GetFridgeProduct(fridgeId, productId);
 
-            _fridgeProductData.DeleteFridgeProduct(fridgeId, productId);
-            return Ok();
+            if (fridgeProduct is not null)
+            {
+                _fridgeProductData.DeleteFridgeProduct(fridgeId, productId);
+                return Ok();
+            }
+
+            return NotFound($"Fridge product with id = {productId} was not found");
         }
     }
 }

@@ -45,7 +45,7 @@ namespace TaskWebAPIServer.Controllers
                            + HttpContext.Request.Path + "/" + fridgeModel.Id, fridgeModel);
         }
 
-        [HttpPatch]
+        [HttpPut]
         [Route("api/[controller]/{id}")]
         public IActionResult EditFridgeModel(Guid id, FridgeModel fridgeModel)
         {
@@ -73,7 +73,7 @@ namespace TaskWebAPIServer.Controllers
                 return Ok();
             }
 
-            return NotFound($"FridgeModel with id = {id} was not found");
+            return NotFound($"Fridge model with id = {id} was not found");
         }
     }
 }
