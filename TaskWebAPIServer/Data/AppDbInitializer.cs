@@ -35,9 +35,10 @@ namespace TaskWebAPIServer.Data
 
                     context.Fridges.AddRange(new List<Fridge>()
                     {
-                        new Fridge() { Id = fridgeIds[0], Name = "Атлант1", OwnerName = "Сын", FridgeModelId = fridgeModelIds[0]},
-                        new Fridge() { Id = fridgeIds[1], Name = "Bosch2", OwnerName = "Сын2", FridgeModelId = fridgeModelIds[1] },
-                        new Fridge() { Id = fridgeIds[2], Name = "LG1", OwnerName = "Сын2", FridgeModelId = fridgeModelIds[2] }
+                        new Fridge() { Id = fridgeIds[0], Name = "Атлант-2022", OwnerName = "Вася", FridgeModelId = fridgeModelIds[0]},
+                        new Fridge() { Id = fridgeIds[1], Name = "Bosch-2010", OwnerName = "Петя", FridgeModelId = fridgeModelIds[1] },
+                        new Fridge() { Id = fridgeIds[2], Name = "LG-2017", OwnerName = "Егор", FridgeModelId = fridgeModelIds[2] },
+                        new Fridge() { Id = fridgeIds[3], Name = "LG-2019", OwnerName = "Кирилл", FridgeModelId = fridgeModelIds[2] }
                     });
                     context.SaveChanges();
 
